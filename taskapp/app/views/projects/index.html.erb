@@ -1,22 +1,38 @@
 <% require 'pp'%>
-<h1>yProjects</h1>
+<h1>Projects</h1>
 
 <ul>
-		<% @projects.each do |project| %>
-		<li>
-		<%= link_to project.title, project_path(project.id) %>
-		<%= link_to "[Edit]", edit_project_path(project.id) %>
-		<%= link_to "[Delete]", project_path(project.id), method: :delete, data: { 
-			confirm: "are you sure?" } %>
-		
-		</li>
-		<% end %>
+<% @projects.each do |project| %>
+<li>
+<%= link_to project.title, project_path(project.id) %>
+<%= link_to "[Edit]", edit_project_path(project.id) %>
+<%= link_to "[Delete]", project_path(project.id), method: :delete, data: { 
+confirm: "are you sure?" } %>
+
+</li>
+<% end %>
 </ul>
 
-<p>
-<%= link_to "Add New", new_project_path %></p>
+<p id="ptag">
+<%= link_to "Add New", new_project_path %>
+</p>
 <% @art = 5
 pp @art
 %>
 
 
+	<p>
+	<%= form_tag("/search", method: "get") do %>
+	<%= label_tag(:q, "Search for:") %>
+	<%= text_field_tag(:q) %>
+	</p>
+	<p>
+	<%= check_box_tag(:pet_dog) %>
+	<%= label_tag(:pet_dog, "トイレ・風呂別") %>
+	<%= check_box_tag(:pet_cat) %>
+	<%= label_tag(:pet_cat, "オートロック") %>
+	</p>
+	<%= submit_tag("Search") %>
+	<p>
+	<% end %>
+	</p>
