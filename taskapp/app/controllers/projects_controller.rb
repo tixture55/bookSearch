@@ -1,4 +1,4 @@
-class ProjectsController < ApplicationController
+class ProjectsController < AuthorizedController
 
 		before_action :set_project, only: [:show, :edit, :update, :destroy]
 
@@ -35,10 +35,11 @@ class ProjectsController < ApplicationController
 		private
       
       def project_params
-          params[:project].permit(:title)
+        cookies[:user_name] = "david"  
+	params[:project].permit(:title)
       end
 
-			def set_project
-			@project = Project.find(params[:id])
-			end
+      def set_project
+        @project = Project.find(params[:id])
+      end
 end
