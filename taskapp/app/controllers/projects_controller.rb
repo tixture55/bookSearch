@@ -1,27 +1,22 @@
 class ProjectsController < AuthorizedController
-		PER = 3
-		before_action :set_project, only: [:show, :edit, :update, :destroy]
+  PER = 3
+  before_action :set_project, only: [:show, :edit, :update, :destroy]
 
-		def index
-
-
-		
-		    if params[:title] && params[:star]
-      	                @projects = Project.where(:title => params[:title]).page(params[:page]).per(PER)
-			#user = Project.find(2)
-			#user.update_attribute(:title, 'rfv')
-			#render :json => user
-		    elsif params[:title]
-      	                @projects = Project.where(:title => params[:title]).page(params[:page]).per(PER)
-		    else
-      	                @projects = Project.page(params[:page]).per(PER)
-		    end
-
+  def index
+    if params[:title].present? && params[:star].present?
+      	                
+      @projects = Project.where(title: params[:title]).page(params[:page]).per(PER)
+    elsif params[:title].present?
+      @projects = Project.where(:title => params[:title]).page(params[:page]).per(PER)
+    elsif params[:star].present?
+      @projects = Project.joins(:reviews).where("reviews.star >= ?" , params[:star]).page(params[:page]).per(PER)
+    else
+      @projects = Project.page(params[:page]).per(PER)
+    end
 		   
-
-		    if params[:title].frozen?
-			@projects = Project.all
-		    end
+    if params[:title].frozen?
+      @projects = Project.all
+    end
  
 		    
 		end
