@@ -1,9 +1,15 @@
 class ProjectsController < AuthorizedController
-
+		PER = 8
 		before_action :set_project, only: [:show, :edit, :update, :destroy]
 
 		def index
+			
+		    if params[:title]
+			@projects = Project.where(:title => params[:title])
+		    else
 			@projects = Project.all
+		    end		    
+      	            #@projects = Project.page(params[:page]).per(PER)
 		end
 		def show
 		end
