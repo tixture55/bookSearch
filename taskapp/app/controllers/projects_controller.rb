@@ -41,5 +41,6 @@ class ProjectsController < AuthorizedController
 
       def set_project
         @project = Project.find(params[:id])
+        #@project = Project.find(params[:id])
       end
 end
