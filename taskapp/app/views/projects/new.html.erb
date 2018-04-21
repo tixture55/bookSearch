@@ -1,15 +1,16 @@
 <h1>Add New</h1>
 
-<%= form_for @project do |f| %>
+<%= form_for @project do |go| %>
 
 <p>
-    <%= f.label :title %><br>
-    <%= f.text_field :title %>
+    <%= go.label :title %><br>
+    <%= go.text_field :title %><br><br>
+    <%= go.text_area :content, :size => "20x10" %>
     <% if @project.errors.any? %>
     <%= @project.errors.messages[:title][0] %>
     <% end %>
 </p>
 <p>
-    <%= f.submit %>
+    <%= go.submit %>
 </p>
 <% end %>
