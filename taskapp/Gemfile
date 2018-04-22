@@ -11,6 +11,8 @@ gem 'rails', '4.1.1'
 gem 'sqlite3'
 
 gem 'kaminari', '~> 0.17.0'
+gem 'rails-footnotes'
+gem 'kakurenbo'
 
 gem 'sorcery'
 #use postgresql
