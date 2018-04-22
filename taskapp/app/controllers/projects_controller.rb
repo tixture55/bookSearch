@@ -1,15 +1,19 @@
+
 class ProjectsController < AuthorizedController
   PER = 3
   before_action :set_project, only: [:show, :edit, :update, :destroy]
 
   def index
+    
     if params[:title].present? && params[:star].present?
       	                
       @projects = Project.where(title: params[:title]).page(params[:page]).per(PER)
     elsif params[:title].present?
       @projects = Project.where(:title => params[:title]).page(params[:page]).per(PER)
     elsif params[:star].present?
-      @projects = Project.joins(:reviews).where("reviews.star >= ?" , params[:star]).page(params[:page]).per(PER)
+      #@projects = Project.joins(:reviews).select("id.*,title.*,pict_path.*").last.id.where("reviews.star >= ?" , params[:star]).page(params[:page]).per(PER)
+      @projects = Project.joins(:reviews).preload(:reviews).where("reviews.star >= ?" , params[:star]).page(params[:page]).per(PER)
+      
     else
       @projects = Project.page(params[:page]).per(PER)
     end
@@ -23,7 +27,8 @@ class ProjectsController < AuthorizedController
 		def show
 		end
     def new
-      @project = Project.new
+      #@project = Project.new
+      @project = Project.new(project_params)
     end
     def create
       @project = Project.new(project_params)
@@ -39,13 +44,13 @@ class ProjectsController < AuthorizedController
     def edit
 		end
 		
-		def update
-		  if @project.update(project_params)
-				redirect_to projects_path
-			else
-				render 'edit'
-			end
-		end
+    def update
+      if @project.update(project_params)
+        redirect_to projects_path
+      else
+        render 'edit'
+      end
+    end
 		def destroy
 		  @project.destroy
 			redirect_to projects_path
@@ -54,7 +59,8 @@ class ProjectsController < AuthorizedController
       
       def project_params
         cookies[:user_name] = "david"  
-	params[:project].permit(:title)
+	#params[:project].permit(:title)
+	projects_params = params.require(:projects).permit(:title)
       end
 
       def set_project
