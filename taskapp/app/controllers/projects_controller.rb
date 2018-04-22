@@ -12,9 +12,11 @@ class ProjectsController < AuthorizedController
       @projects = Project.where("title like '%" + params[:title] + "%'").page(params[:page]).per(PER)
     elsif params[:star].present?
       @projects = Project.joins(:reviews).preload(:reviews).where("reviews.star >= ?" , params[:star]).page(params[:page]).per(PER)
-      
     else
-      @projects = Project.page(params[:page]).per(PER)
+      @projects = Project.with_deleted.page(params[:page]).per(PER)
+      #@projects = Project.page(params[:page]).per(PER)
+      #@projects = Project.with_deleted
+      
     end
 		   
     if params[:title].frozen?
@@ -25,18 +27,23 @@ class ProjectsController < AuthorizedController
 		def show
 		end
     def new
-      #@project = Project.new
-      @project = Project.new(project_params)
+      @project = Project.new
+      #@project = Project.new(project_params)
     end
     def create
-      @project = Project.new(project_params)
-      
-      if @project.save
-        redirect_to projects_path
-      else
-        render 'new'
+      #render plain: params[:post].inspect
+      #@project = Project.new(project_params)
+      #@project = Project.new(params[:post])
+      @project = Project.new(params.require(:post).permit(:title,:content))
+      @project.save
+
+      redirect_to projects_path
+      #if @project.save
+        #redirect_to projects_path
+      #else
+        #render 'new'
         #render 'index'
-      end
+      #end
       
     end
     def edit
