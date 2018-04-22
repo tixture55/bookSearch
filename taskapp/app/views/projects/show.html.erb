@@ -60,9 +60,7 @@ var google_remarketing_only = true;
 </a>
 </span>
 <span>
-<a href="https://koukisyukatunavi.jp/signin" class="btn btn-bordergreen">
-会員登録
-</a>
+<%=  link_to '会員登録' , new_project_path %>
 </span>
 </div>
 </div>
@@ -133,11 +131,11 @@ var google_remarketing_only = true;
 </div>
 <div class="col-xs-5">
 
-<h3>価格：590円</h3>
+<h3>価格：<%= @project.price %>円</h3>
 <br>
 <h3>残り　２点</h3>
 <hr>
-<h3>レビュー：★★★</h3>
+<h3>レビュー：</h3>
 <h3><%= button_to "購入する", :action => "new" %></h3>
 <div class="top-newcompany-image">
 <ul class="bxslider">
@@ -175,7 +173,7 @@ var google_remarketing_only = true;
 <hr>
 
 <h3>よく一緒に注文されている商品</h3>
-</div>
+<%= debug @s %></div>
 </div>
 
 

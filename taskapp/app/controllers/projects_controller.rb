@@ -24,8 +24,10 @@ class ProjectsController < AuthorizedController
     end
 		    
   end
-		def show
-		end
+  def show
+    #render plain: params[:id].inspect
+    @s = Project.joins("LEFT OUTER JOIN reviews ON projects.id = reviews.project_id").where("reviews.project_id = ?" , params[:id]).select("reviews.*")
+  end
     def new
       @project = Project.new
       #@project = Project.new(project_params)
@@ -56,17 +58,18 @@ class ProjectsController < AuthorizedController
         render 'edit'
       end
     end
-		def destroy
-		  @project.destroy
-			redirect_to projects_path
-		end
-		private
+    def destroy
+      @project.destroy
+      reset_session
+      redirect_to projects_path
+    end
+    private
       
-      def project_params
-        cookies[:user_name] = "david"  
-	#params[:project].permit(:title)
-	projects_params = params.require(:projects).permit(:title)
-      end
+    def project_params
+      cookies[:user_name] = "david"  
+      #params[:project].permit(:title)
+      projects_params = params.require(:projects).permit(:title)
+    end
 
       def set_project
         @project = Project.find(params[:id])
