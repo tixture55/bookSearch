@@ -7,9 +7,9 @@ class ProjectsController < AuthorizedController
     
     if params[:title].present? && params[:star].present?
       	                
-      @projects = Project.where(title: params[:title]).page(params[:page]).per(PER)
+      @projects = Project.where("title like '%" + params[:title] + "%'").page(params[:page]).per(PER)
     elsif params[:title].present?
-      @projects = Project.where(:title => params[:title]).page(params[:page]).per(PER)
+      @projects = Project.where("title like '%" + params[:title] + "%'").page(params[:page]).per(PER)
     elsif params[:star].present?
       @projects = Project.joins(:reviews).preload(:reviews).where("reviews.star >= ?" , params[:star]).page(params[:page]).per(PER)
       
