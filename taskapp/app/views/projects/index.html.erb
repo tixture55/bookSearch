@@ -1,11 +1,31 @@
 
 <h1>Projects</h1>
 
+<%=form_tag({ :controller => 'projects', :action => 'index' },
+{ :method => :get}) do %>
+<%= label_tag(:q, "Search for:") %>
+<%= text_field_tag 'title' %>
+<br>
+<br>
+<%= label_tag(:q, "★　5以上") %>
+<%= radio_button_tag 'star', '5' %>
+<br>
+<%= label_tag(:q, "★　4以上") %>
+<%= radio_button_tag 'star', '4' %>
+<br>
+<%= label_tag(:q, "★　3以上") %>
+<%= radio_button_tag 'star', '3' %>
+</p>
+<%= submit_tag("Search") %>
+<p>
+<% end %>
+
 <ul>
 <% @projects.each do |project| %>
 <%= link_to image_tag(project.pict_path), project_path(project.id) %>
 
 <% end %>
+<%= paginate @projects %>
 </ul>
 
 <% @art = 5
@@ -14,14 +34,4 @@ pp @art
 
 
 <p>
-<%= form_tag("/new", method: "get") do %>
-<%= label_tag(:q, "Search for:") %>
-<%= text_field_tag(:q) %>
-</p>
-<p>
-</p>
-<%= submit_tag("Search") %>
-<p>
-<% end %>
-<%= paginate @projects %>
 </p>
