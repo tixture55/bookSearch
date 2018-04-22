@@ -1,5 +1,6 @@
 class Project < ActiveRecord::Base
 	has_many :tasks
+	has_many :reviews
 	validates :title,
 					presence: { message: "入力してください" },
 					length: { minimum: 3, message: "3文字以上必要"}
