@@ -1,6 +1,6 @@
 
 class ProjectsController < AuthorizedController
-  PER = 3
+  PER = 5
   before_action :set_project, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -11,7 +11,6 @@ class ProjectsController < AuthorizedController
     elsif params[:title].present?
       @projects = Project.where(:title => params[:title]).page(params[:page]).per(PER)
     elsif params[:star].present?
-      #@projects = Project.joins(:reviews).select("id.*,title.*,pict_path.*").last.id.where("reviews.star >= ?" , params[:star]).page(params[:page]).per(PER)
       @projects = Project.joins(:reviews).preload(:reviews).where("reviews.star >= ?" , params[:star]).page(params[:page]).per(PER)
       
     else
@@ -21,9 +20,8 @@ class ProjectsController < AuthorizedController
     if params[:title].frozen?
       @projects = Project.all
     end
- 
 		    
-		end
+  end
 		def show
 		end
     def new

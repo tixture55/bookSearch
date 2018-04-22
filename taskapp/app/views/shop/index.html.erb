@@ -1,0 +1,13 @@
+
+
+
+<h1>Projects</h1>
+
+<ul>
+<%= debug @sellbooks %>
+<% @sellbooks.each do |sellbook| %>
+<li>
+<%= sellbook.title %>
+
+</li>
+<% end %>
