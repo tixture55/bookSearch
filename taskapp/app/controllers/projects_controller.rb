@@ -26,6 +26,17 @@ class ProjectsController < AuthorizedController
   end
   def show
     #render plain: params[:id].inspect
+    #@projects = Project.all
+    @useritem = UserItem.find(params[:id]);
+    #@useritem = UserItem.where("user_items.id => ?", params[:id])
+    #respond_to do |format|
+      #format.html
+      #format.json { render json: @projects }
+    #end
+    if session[:session_id]
+      @notice = "#{session[:session_id]}でログインしています。"
+    end
+
     @s = Project.joins("LEFT OUTER JOIN reviews ON projects.id = reviews.project_id").where("reviews.project_id = ?" , params[:id]).select("reviews.*")
   end
     def new
@@ -34,8 +45,9 @@ class ProjectsController < AuthorizedController
     end
     def create
       #render plain: params[:post].inspect
-      #@project = Project.new(project_params)
-      #@project = Project.new(params[:post])
+      @person = Person.create!({ name: "Isaac Newton", age: 35 })
+      rescue ActiveRecord::RecordInvalid => e
+      pp e.record.errors
       @project = Project.new(params.require(:post).permit(:title,:content))
       @project.save
 
@@ -49,7 +61,7 @@ class ProjectsController < AuthorizedController
       
     end
     def edit
-		end
+    end
 		
     def update
       if @project.update(project_params)

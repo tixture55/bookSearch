@@ -56,11 +56,23 @@ var google_remarketing_only = true;
 <div class="pull-right">
 <span class="link_login">
 <a href="https://koukisyukatunavi.jp/login" class="btn btn-green">
+<% if @notice.present? then %>
+<%= @notice %>
+<% else %>
 ログイン
+
+<% end %>
 </a>
 </span>
 <span>
+
+<% if @notice.present? then %>
+
+<%=  link_to 'ログアウト' , destroy_user_session_path %>
+<% else %>
 <%=  link_to '会員登録' , new_project_path %>
+<% end %>
+
 </span>
 </div>
 </div>
@@ -171,7 +183,9 @@ var google_remarketing_only = true;
 </div>
 </div>
 <hr>
-
+<h3>この商品はこんな人が買っています</h3>
+<%= @useritem.user %>
+<hr>
 <h3>よく一緒に注文されている商品</h3>
 <%= debug @s %></div>
 </div>
