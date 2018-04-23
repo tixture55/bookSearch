@@ -185,18 +185,20 @@ var google_remarketing_only = true;
 </div>
 <hr>
 <h3>この商品はこんな人が買っています</h3>
+<br>
 <% if @useritem.user.present? %>
-  <%= @useritem.user %>
-  :
-  <% @s.each do |project| %>
-  <%= project.review %>
-  <%= project.user_id%>
-<% end %>
+  <% @r.each do |userlist| %>
+    <%= userlist.user %>
+    :
+    <%= userlist.review %>
+    <br>
+  <% end %>
+  
 <hr>
 
 <% end %>
 <h3>よく一緒に注文されている商品</h3>
-<%= debug @projects %></div>
+<%= debug @r %></div>
 </div>
 
 
