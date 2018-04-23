@@ -82,6 +82,7 @@ var google_remarketing_only = true;
 <div class="container">
 <div class="row">
 <div class="col-xs-7 top_search">
+<%= div_tag_if(@project.blank?, "商品がありません。") %>
 <h1><%= @project.title %></h1>
 <%= image_tag(@project.pict_path) %>
 </p>
@@ -184,10 +185,18 @@ var google_remarketing_only = true;
 </div>
 <hr>
 <h3>この商品はこんな人が買っています</h3>
-<%= @useritem.user %>
+<% if @useritem.user.present? %>
+  <%= @useritem.user %>
+  :
+  <% @s.each do |project| %>
+  <%= project.review %>
+  <%= project.user_id%>
+<% end %>
 <hr>
+
+<% end %>
 <h3>よく一緒に注文されている商品</h3>
-<%= debug @s %></div>
+<%= debug @projects %></div>
 </div>
 
 

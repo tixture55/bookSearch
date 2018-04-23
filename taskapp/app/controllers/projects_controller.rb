@@ -5,6 +5,8 @@ class ProjectsController < AuthorizedController
 
   def index
     
+    #@a = Project.find_by_title('scala入門') 
+    
     if params[:title].present? && params[:star].present?
       	                
       @projects = Project.where("title like '%" + params[:title] + "%'").page(params[:page]).per(PER)
@@ -26,20 +28,18 @@ class ProjectsController < AuthorizedController
   end
   def show
     #render plain: params[:id].inspect
-    #@projects = Project.all
-    @useritem = UserItem.find(params[:id]);
-    #@useritem = UserItem.where("user_items.id => ?", params[:id])
-    #respond_to do |format|
-      #format.html
-      #format.json { render json: @projects }
-    #end
+    @useritem = UserItem.find(params[:id])
+
     if session[:session_id]
       @notice = "#{session[:session_id]}でログインしています。"
     end
+    
+    @projects = Project.joins(:reviews).preload(:reviews).where("projects.id = ?" , params[:id])
 
-    @s = Project.joins("LEFT OUTER JOIN reviews ON projects.id = reviews.project_id").where("reviews.project_id = ?" , params[:id]).select("reviews.*")
+    @s = Project.joins("LEFT OUTER JOIN reviews ON projects.id = reviews.project_id").where("reviews.project_id = ?" , params[:id]).select("projects.* , reviews.*")
   end
-    def new
+  
+  def new
       @project = Project.new
       #@project = Project.new(project_params)
     end
