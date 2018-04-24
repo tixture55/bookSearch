@@ -55,9 +55,14 @@ var google_remarketing_only = true;
 </div>
 <div class="pull-right">
 <span class="link_login">
+  こんにちは！ 
 <a href="https://koukisyukatunavi.jp/login" class="btn btn-green">
-<% if @notice.present? then %>
-<%= @notice %>
+<% if session[:session_id].present? then %>
+
+  <% @r.each do |userlist| %>
+    <%= userlist.user %>
+  <% end %>
+  さん
 <% else %>
 ログイン
 
@@ -148,7 +153,6 @@ var google_remarketing_only = true;
 <br>
 <h3>残り　２点</h3>
 <hr>
-<h3>レビュー：</h3>
 <h3><%= button_to "購入する", :action => "new" %></h3>
 <div class="top-newcompany-image">
 <ul class="bxslider">
@@ -186,19 +190,19 @@ var google_remarketing_only = true;
 <hr>
 <h3>この商品はこんな人が買っています</h3>
 <br>
-<% if @useritem.user.present? %>
   <% @r.each do |userlist| %>
     <%= userlist.user %>
     :
+    <%= add_star %>
+    <b><%= userlist.star %></b>
     <%= userlist.review %>
     <br>
   <% end %>
   
 <hr>
 
-<% end %>
 <h3>よく一緒に注文されている商品</h3>
-<%= debug @r %></div>
+</div>
 </div>
 
 

@@ -10,11 +10,13 @@ class Project < ActiveRecord::Base
     self.title += "でござる"
   end 
 
-	def self.search(search) #self.でクラスメソッドとしている
-		if search # Controllerから渡されたパラメータが!= nilの場合は、titleカラムを部分一致検索
-			Project.where(['name LIKE ?', "%#{search}%"])
-		else
-			Project.all #全て表示。
-		end
-	end
+  def self.search(search) #self.でクラスメソッドとしている
+    if search.blank? # Controllerから渡されたパラメータが!= nilの場合は、titleカラムを部分一致検索
+      all
+    else
+      Project.where(['title LIKE ?', "%#{search}%"])
+      #conditions = %w[content name email site_url].map { |c| "comments.#{c} like :search" }
+      #where(conditions.join(" or "), :search => "%#{search}%")
+    end
+  end
 end

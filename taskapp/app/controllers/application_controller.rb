@@ -7,9 +7,18 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   before_action :authenticate_user! , :detect_device_variant
+
+  before_filter :set_request_filter
+
+
+
   private
   def detect_device_variant
     request.variant = :smart if is_mobile?
+  end
+
+  def set_request_filter
+    Thread.current[:request] = request
   end
 
 

@@ -7,14 +7,14 @@ class ProjectsController < AuthorizedController
     
     #@a = Project.find_by_title('scala入門') 
     
-    if params[:title].present? && params[:star].present?
-      	                
-      @projects = Project.where("title like '%" + params[:title] + "%'").page(params[:page]).per(PER)
-    elsif params[:title].present?
-      @projects = Project.where("title like '%" + params[:title] + "%'").page(params[:page]).per(PER)
+    @all_contacts_count ||= current_user
+
+    if params[:title].present? && params[:star].present? || params[:title].present?
+      @projects = Project.search(params[:title]).page(params[:page]).per(PER)
     elsif params[:star].present?
-      @projects = Project.joins(:reviews).preload(:reviews).where("reviews.star >= ?" , params[:star]).page(params[:page]).per(PER)
+      @projects = Project.joins(:reviews).preload(:reviews).merge(Review.star(params[:star])).page(params[:page]).per(PER)
     else
+      #@projects = Project.with_deleted.page(params[:page]).per(PER)
       @projects = Project.with_deleted.page(params[:page]).per(PER)
       #@projects = Project.page(params[:page]).per(PER)
       #@projects = Project.with_deleted
@@ -28,14 +28,8 @@ class ProjectsController < AuthorizedController
   end
   def show
     #render plain: params[:id].inspect
-    @useritem = UserItem.find(params[:id])
 
-    if session[:session_id]
-      @notice = "#{session[:session_id]}でログインしています。"
-    end
-    
-
-    @r = Project.joins("LEFT OUTER JOIN reviews ON projects.id = reviews.project_id LEFT OUTER JOIN user_items ON user_items.user_id = reviews.user_id").where("reviews.project_id = ?" , params[:id]).select("projects.* , reviews.* , user_items.*")
+    @r = Project.joins("LEFT OUTER JOIN reviews ON projects.id = reviews.project_id LEFT OUTER JOIN user_items ON user_items.user_id = reviews.user_id").where("reviews.project_id = ?" , params[:id]).select("reviews.* , user_items.*")
     
   end
   def new

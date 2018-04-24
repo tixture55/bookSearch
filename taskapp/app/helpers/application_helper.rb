@@ -7,5 +7,7 @@ module ApplicationHelper
       content_tag("div", content_or_options_with_block, options, escape, &block)
     end
   end
-
+  def add_star
+    image_tag("star.jpg", :size => "22x22", :alt => "アイコン")
+  end
 end
