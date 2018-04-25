@@ -1,7 +1,8 @@
 
 class ProjectsController < AuthorizedController
   PER = 5
-  before_action :set_project, only: [:show,:edit, :update, :destroy]
+  before_action :set_project, only: [:show,:edit, :update, :destroy] ,except: [:user_detail]
+  #before_action :set_project, except: :user_detail
 
   def index
     #@a = Project.find_by_title('scala入門') 
@@ -27,18 +28,16 @@ class ProjectsController < AuthorizedController
   def show
     #render plain: params[:id].inspect
     @user = current_user
-    @r = Project.joins("LEFT OUTER JOIN reviews ON projects.id = reviews.project_id LEFT OUTER JOIN user_items ON user_items.user_id = reviews.user_id").where("reviews.project_id = ?" , params[:id]).select("reviews.* , user_items.*")
+    @r = Project.joins("LEFT OUTER JOIN reviews ON projects.id = reviews.project_id LEFT OUTER JOIN user_items ON user_items.user_id = reviews.user_id").where("reviews.project_id = ?" , params[:id]).select("projects.* , reviews.* , user_items.*")
+    @cart = Project.where("id = ? ", params[:id])
     
   end
   
-  def show_user_detail
+  def user_detail
     
     #render plain: params[:id].inspect
     
-    @ra = Project.joins("LEFT OUTER JOIN reviews ON projects.id = reviews.project_id LEFT OUTER JOIN user_items ON user_items.user_id = reviews.user_id").where("reviews.user_id = ?" , 1).select("projects.*, reviews.* , user_items.*")
-    #@r= Report.new
-    #@r = Report.find_by(id: params[:format])
-    #render plain: params[@r].inspect
+    @ra = Project.joins("LEFT OUTER JOIN reviews ON projects.id = reviews.project_id LEFT OUTER JOIN user_items ON user_items.user_id = reviews.user_id").where("reviews.user_id = ?" , params[:id]).select("projects.*, reviews.* , user_items.*")
     
     @r = Project.joins("LEFT OUTER JOIN reviews ON projects.id = reviews.project_id LEFT OUTER JOIN user_items ON user_items.user_id = reviews.user_id").where("reviews.project_id = ?" , params[:id]).select("reviews.* , user_items.*")
 
