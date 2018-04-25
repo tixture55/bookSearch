@@ -30,7 +30,7 @@ class ProjectsController < AuthorizedController
     @user = current_user
     @r = Project.joins("LEFT OUTER JOIN reviews ON projects.id = reviews.project_id LEFT OUTER JOIN user_items ON user_items.user_id = reviews.user_id").where("reviews.project_id = ?" , params[:id]).select("projects.* , reviews.* , user_items.*")
     @cart = Project.where("id = ? ", params[:id])
-    
+    @descryption = ItemDesc.find(params[:id])   
   end
   
   def user_detail
