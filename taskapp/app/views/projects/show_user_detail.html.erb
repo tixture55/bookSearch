@@ -45,7 +45,7 @@ var google_remarketing_only = true;
 <div class="clearfix">
 <div class="pull-left description">これから頑張る！就活生を応援するナビサイト</div>
 <div class="pull-right">
-<span class="comment"><a href="https://koukisyukatunavi.jp/about">後期就活ナビとは</a></span>
+<span class="comment"><%= link_to 'トップページへ',projects_path %></span>
 <span class="comment"><a href="https://koukisyukatunavi.jp/introduction">採用担当者様へ</a></span>
 </div>
 </div>
@@ -59,7 +59,9 @@ var google_remarketing_only = true;
   こんにちは！ 
 <a href="https://koukisyukatunavi.jp/login" class="btn btn-green">
 
-  <%= @user.email %>
+  <% @r.each do |userlist| %>
+    <%= userlist.user %>
+  <% end %>
   さん
 <%=  link_to 'ログアウト' , destroy_user_session_path %>
 <% else %>
@@ -85,16 +87,25 @@ var google_remarketing_only = true;
 <div class="container">
 <div class="row">
 <div class="col-xs-7 top_search">
-<%= div_tag_if(@project.blank?, "商品がありません。") %>
-<h1><%= @project.title %></h1>
-<%= image_tag(@project.pict_path) %>
+
+<% price = 2500 * 1.05 %>
+
+<h2>レビュー</h2></p>
+<br>
+<% @ra.each do |userlist| %>
+  <%= link_to image_tag(userlist.pict_path, :size => "80x80"), project_path(userlist.id) %>
+  <%= add_star %>
+  <%= userlist.star %>
+  :
+  <%= userlist.created_at.strftime('%Y年%m月%d日 %H:%M') %>
+  <%= userlist.review %>
+  <br>
+  <br>
+  <hr>
+<% end %>
 </p>
 </p>
 </p>
-</p>
-<ul class="nav nav-tabs">
-<li role="presentation" class="active"><a href="#tab_s1" data-toggle="tab">企業を探す</a></li>
-<li role="presentation" class="noactive"><a href="#tab_s2" data-toggle="tab">説明会を探す</a></li>
 </ul>
 <div class="tab-content">
 <div class="base-container tab-pane in active" id="tab_s1">
@@ -147,12 +158,16 @@ var google_remarketing_only = true;
 </div>
 <div class="col-xs-5">
 
-<h3>価格：<%= @project.price %>円</h3>
 <br>
-<h3>残り　２点</h3>
-<hr>
-<h3><%= button_to "カートに追加する", :action => "new" %></h3>
-<br>
+<h3>レビュー</h3>
+<% @r.each do |userlist| %>
+  <%= link_to userlist.user, projects_show_user_details_path %>
+  :
+  <%= add_star %>
+  <b><%= userlist.star %></b>
+  <%= userlist.review %>
+  <br>
+<% end %>
 <div class="top-newcompany-image">
 <ul class="bxslider">
 <li>
@@ -187,20 +202,8 @@ var google_remarketing_only = true;
 </div>
 </div>
 <hr>
-<h3>この商品はこんな人が買っています</h3>
 <br>
-  <% @r.each do |userlist| %>
-    <%= link_to userlist.user, projects_show_user_detail_path(userlist.id) %>
-    :
-    <%= add_star %>
-    <b><%= userlist.star %></b>
-    <%= userlist.review %>
-    <br>
-  <% end %>
-  
-<hr>
 
-<h3>よく一緒に注文されている商品</h3>
 </div>
 </div>
 

@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Simple Logs</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Text</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @simple_logs.each do |simple_log| %>
+      <tr>
+        <td><%= simple_log.text %></td>
+        <td><%= link_to 'Show', simple_log %></td>
+        <td><%= link_to 'Edit', edit_simple_log_path(simple_log) %></td>
+        <td><%= link_to 'Destroy', simple_log, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Simple log', new_simple_log_path %>

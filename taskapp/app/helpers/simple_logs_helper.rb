@@ -1,0 +1,2 @@
+module SimpleLogsHelper
+end

@@ -5,7 +5,10 @@
 <p>
     <%= go.label :title %><br>
     <%= go.text_field :title %><br><br>
-    <%= go.text_area :content, :size => "20x10" %>
+    <%= go.label :pict_path %><br>
+    <%= go.text_field :pict_path %><br><br>
+    <%= go.label :price %><br>
+    <%= go.text_field :price %><br><br>
     <% if @project.errors.any? %>
     <%= @project.errors.messages[:title][0] %>
     <% end %>

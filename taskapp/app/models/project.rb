@@ -3,8 +3,8 @@ class Project < ActiveRecord::Base
 	has_many :reviews
 	has_many :user_items
 	validates :title,
-					presence: { message: "入力してください" },
-					length: { minimum: 3, message: "3文字以上必要"}
+	presence: { message: "入力してください" },
+	length: { minimum: 3, message: "3文字以上必要"}
 
   def hello
     self.title += "でござる"
