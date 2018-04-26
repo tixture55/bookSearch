@@ -5,10 +5,7 @@ class ProjectsController < AuthorizedController
   #before_action :set_project, except: :user_detail
 
   def index
-    #@a = Project.find_by_title('scala入門') 
     
-    @all_contacts_count ||= current_user
-
     if params[:title].present? && params[:star].present? || params[:title].present?
       @projects = Project.search(params[:title]).page(params[:page]).per(PER)
     elsif params[:star].present?
@@ -33,16 +30,6 @@ class ProjectsController < AuthorizedController
     @descryption = ItemDesc.find(params[:id])   
   end
   
-  def user_detail
-    
-    #render plain: params[:id].inspect
-    
-    @ra = Project.joins("LEFT OUTER JOIN reviews ON projects.id = reviews.project_id LEFT OUTER JOIN user_items ON user_items.user_id = reviews.user_id").where("reviews.user_id = ?" , params[:id]).select("projects.*, reviews.* , user_items.*")
-    
-    @r = Project.joins("LEFT OUTER JOIN reviews ON projects.id = reviews.project_id LEFT OUTER JOIN user_items ON user_items.user_id = reviews.user_id").where("reviews.project_id = ?" , params[:id]).select("reviews.* , user_items.*")
-
-  end
-
   def new
       @project = Project.new
       #@project = Project.new(project_params)
