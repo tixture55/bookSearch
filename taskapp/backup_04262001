@@ -1,0 +1,1015 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: blogs; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE blogs (
+    id integer NOT NULL,
+    title character varying,
+    word text,
+    writer character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE blogs OWNER TO postgres;
+
+--
+-- Name: blogs_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE blogs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE blogs_id_seq OWNER TO postgres;
+
+--
+-- Name: blogs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE blogs_id_seq OWNED BY blogs.id;
+
+
+--
+-- Name: clicks; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE clicks (
+    id integer NOT NULL,
+    project_id integer,
+    user_id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE clicks OWNER TO postgres;
+
+--
+-- Name: clicks_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE clicks_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE clicks_id_seq OWNER TO postgres;
+
+--
+-- Name: clicks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE clicks_id_seq OWNED BY clicks.id;
+
+
+--
+-- Name: croject; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE croject (
+    id integer,
+    title character varying(255),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    content character varying(255)
+);
+
+
+ALTER TABLE croject OWNER TO postgres;
+
+--
+-- Name: item_descs; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE item_descs (
+    id integer NOT NULL,
+    descryption character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE item_descs OWNER TO postgres;
+
+--
+-- Name: item_descs_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE item_descs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE item_descs_id_seq OWNER TO postgres;
+
+--
+-- Name: item_descs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE item_descs_id_seq OWNED BY item_descs.id;
+
+
+--
+-- Name: item_sells; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE item_sells (
+    id integer NOT NULL,
+    project_id integer,
+    sell integer,
+    click integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE item_sells OWNER TO postgres;
+
+--
+-- Name: item_sells_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE item_sells_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE item_sells_id_seq OWNER TO postgres;
+
+--
+-- Name: item_sells_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE item_sells_id_seq OWNED BY item_sells.id;
+
+
+--
+-- Name: projects; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE projects (
+    id integer NOT NULL,
+    title character varying(255),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    content character varying(255),
+    pict_path character varying(255) DEFAULT ''::character varying NOT NULL,
+    price integer,
+    deleted_at timestamp without time zone,
+    item_code character varying
+);
+
+
+ALTER TABLE projects OWNER TO postgres;
+
+--
+-- Name: projects_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE projects_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE projects_id_seq OWNER TO postgres;
+
+--
+-- Name: projects_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE projects_id_seq OWNED BY projects.id;
+
+
+--
+-- Name: reviews; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE reviews (
+    id integer NOT NULL,
+    star integer,
+    review character varying(255),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    project_id integer,
+    user_id integer
+);
+
+
+ALTER TABLE reviews OWNER TO postgres;
+
+--
+-- Name: reviews_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE reviews_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE reviews_id_seq OWNER TO postgres;
+
+--
+-- Name: reviews_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE reviews_id_seq OWNED BY reviews.id;
+
+
+--
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE schema_migrations (
+    version character varying(255) NOT NULL
+);
+
+
+ALTER TABLE schema_migrations OWNER TO postgres;
+
+--
+-- Name: sell_books; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE sell_books (
+    id integer NOT NULL
+);
+
+
+ALTER TABLE sell_books OWNER TO postgres;
+
+--
+-- Name: sell_books_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE sell_books_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE sell_books_id_seq OWNER TO postgres;
+
+--
+-- Name: sell_books_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE sell_books_id_seq OWNED BY sell_books.id;
+
+
+--
+-- Name: sellbooks; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE sellbooks (
+    id integer NOT NULL,
+    title character varying(255),
+    price integer,
+    pict_path character varying(255),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE sellbooks OWNER TO postgres;
+
+--
+-- Name: sellbooks_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE sellbooks_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE sellbooks_id_seq OWNER TO postgres;
+
+--
+-- Name: sellbooks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE sellbooks_id_seq OWNED BY sellbooks.id;
+
+
+--
+-- Name: shops; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE shops (
+    id integer NOT NULL,
+    title character varying(255),
+    price integer,
+    pict_path character varying(255),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE shops OWNER TO postgres;
+
+--
+-- Name: shops_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE shops_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE shops_id_seq OWNER TO postgres;
+
+--
+-- Name: shops_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE shops_id_seq OWNED BY shops.id;
+
+
+--
+-- Name: simple_logs; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE simple_logs (
+    id integer NOT NULL,
+    text character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE simple_logs OWNER TO postgres;
+
+--
+-- Name: simple_logs_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE simple_logs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE simple_logs_id_seq OWNER TO postgres;
+
+--
+-- Name: simple_logs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE simple_logs_id_seq OWNED BY simple_logs.id;
+
+
+--
+-- Name: user_items; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE user_items (
+    id integer NOT NULL,
+    "user" character varying(255),
+    count integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    user_id integer,
+    clicked_item_id json
+);
+
+
+ALTER TABLE user_items OWNER TO postgres;
+
+--
+-- Name: user_items_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE user_items_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE user_items_id_seq OWNER TO postgres;
+
+--
+-- Name: user_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE user_items_id_seq OWNED BY user_items.id;
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE users (
+    id integer NOT NULL,
+    email character varying(255) NOT NULL,
+    crypted_password character varying(255),
+    salt character varying(255),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    remember_me_token character varying(255),
+    remember_me_token_expires_at timestamp without time zone,
+    encrypted_password character varying(255) DEFAULT ''::character varying NOT NULL,
+    reset_password_token character varying(255),
+    reset_password_sent_at timestamp without time zone,
+    remember_created_at timestamp without time zone,
+    sign_in_count integer DEFAULT 0 NOT NULL,
+    current_sign_in_at timestamp without time zone,
+    last_sign_in_at timestamp without time zone,
+    current_sign_in_ip inet,
+    last_sign_in_ip inet
+);
+
+
+ALTER TABLE users OWNER TO postgres;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE users_id_seq OWNER TO postgres;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE users_id_seq OWNED BY users.id;
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY blogs ALTER COLUMN id SET DEFAULT nextval('blogs_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY clicks ALTER COLUMN id SET DEFAULT nextval('clicks_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY item_descs ALTER COLUMN id SET DEFAULT nextval('item_descs_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY item_sells ALTER COLUMN id SET DEFAULT nextval('item_sells_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY projects ALTER COLUMN id SET DEFAULT nextval('projects_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY reviews ALTER COLUMN id SET DEFAULT nextval('reviews_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY sell_books ALTER COLUMN id SET DEFAULT nextval('sell_books_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY sellbooks ALTER COLUMN id SET DEFAULT nextval('sellbooks_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY shops ALTER COLUMN id SET DEFAULT nextval('shops_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY simple_logs ALTER COLUMN id SET DEFAULT nextval('simple_logs_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY user_items ALTER COLUMN id SET DEFAULT nextval('user_items_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Data for Name: blogs; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY blogs (id, title, word, writer, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Name: blogs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('blogs_id_seq', 1, true);
+
+
+--
+-- Data for Name: clicks; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY clicks (id, project_id, user_id, created_at, updated_at) FROM stdin;
+1	2	1	2018-04-26 10:40:42.50219	2018-04-26 10:40:42.50219
+2	5	1	2018-04-26 10:41:59.775386	2018-04-26 10:41:59.775386
+3	3	1	2018-04-26 10:42:10.749964	2018-04-26 10:42:10.749964
+4	3	1	2018-04-26 10:48:55.124009	2018-04-26 10:48:55.124009
+5	2	1	2018-04-26 10:49:29.756782	2018-04-26 10:49:29.756782
+6	3	1	2018-04-26 10:49:42.050375	2018-04-26 10:49:42.050375
+7	2	1	2018-04-26 10:49:55.904332	2018-04-26 10:49:55.904332
+8	2	1	2018-04-26 10:54:45.501896	2018-04-26 10:54:45.501896
+\.
+
+
+--
+-- Name: clicks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('clicks_id_seq', 8, true);
+
+
+--
+-- Data for Name: croject; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY croject (id, title, created_at, updated_at, content) FROM stdin;
+1	qaz	2016-08-06 13:58:56.842002	2016-08-06 13:58:56.842002	1
+2	rfv	2017-12-09 14:13:02.36136	2017-12-09 14:13:02.36136	2
+3	hyy	2018-04-17 13:14:03.115837	2018-04-17 13:14:03.115837	3
+4	qdd	2018-04-17 13:15:16.106622	2018-04-17 13:15:16.106622	4
+5	ddddd	2018-04-20 15:26:47.44533	2018-04-20 15:26:47.44533	\N
+6	ggg	2018-04-20 16:58:51.903026	2018-04-20 16:58:51.903026	\N
+\.
+
+
+--
+-- Data for Name: item_descs; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY item_descs (id, descryption, created_at, updated_at) FROM stdin;
+1	本書は、クライアントサイドJavaScript環境で利用できる代表的なアプリケーションフレームワーク（以降、フレームワーク）である「AngularJS」を初めて学ぶ人のための書籍です。本書の構成と各章の目的を以下にまとめます。	2018-04-26 03:51:10.596831	2018-04-26 03:51:10.596831
+2	巻頭カラー】『バカレイドッグス』単行本第１巻発売記念巻頭カラー!!　犬童医院に連続殺人鬼が来院！　救うべきか、救わざるべきか。犬童の信念が試される！　【重版出来】 『MFゴースト』最速重版伝説――発売即20万部突破!!	2018-04-26 03:59:26.923156	2018-04-26 03:59:26.923156
+3	表紙・巻頭：小倉優香／巻末：最新単行本３／６発売！コラボグラビア『ソウナンですか？』×RaMu／マジでヤバくて怖い“暗殺劇”が始まるよ!!	2018-04-26 04:03:39.944254	2018-04-26 04:03:39.944254
+\.
+
+
+--
+-- Name: item_descs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('item_descs_id_seq', 1, false);
+
+
+--
+-- Data for Name: item_sells; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY item_sells (id, project_id, sell, click, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Name: item_sells_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('item_sells_id_seq', 1, false);
+
+
+--
+-- Data for Name: projects; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY projects (id, title, created_at, updated_at, content, pict_path, price, deleted_at, item_code) FROM stdin;
+1	anglarJS入門	2018-04-26 00:30:50.949193	2018-04-26 00:30:50.949193	1	anglar.jpg	1200	\N	101
+2	ヤングマガジン101号	2018-04-26 00:31:38.727141	2018-04-26 00:31:38.727141	2	yanmaga.jpg	390	\N	102
+3	ヤングマガジン138号	2018-04-26 00:32:01.645746	2018-04-26 00:32:01.645746	2	yanmaga2.jpg	390	\N	102
+4	日経ソフトウェア10月号	2018-04-26 00:33:54.285903	2018-04-26 00:33:54.285903	2	soft.jpg	590	\N	103
+5	ヤングジャンプ98号	2018-04-26 00:34:39.088442	2018-04-26 00:34:39.088442	2	yanjan.jpg	390	\N	102
+6	ヤングマガジン88号	2018-04-26 00:35:38.522643	2018-04-26 00:35:38.522643	2	yanmaga2.jpg	390	\N	102
+7	日経ソフトウェア12月号	2018-04-26 00:36:18.745486	2018-04-26 00:36:18.745486	2	soft2.jpg	590	\N	103
+9	ruby on rails4	2018-04-26 00:40:52.352619	2018-04-26 00:40:52.352619	2	ruby.jpg	2290	\N	101
+10	scala入門	2018-04-26 00:43:46.511127	2018-04-26 00:43:46.511127	2	scala.jpg	2590	\N	101
+11	Tarzan10月号	2018-04-26 00:45:01.575317	2018-04-26 00:45:01.575317	2	tarzan2.jpg	550	\N	105
+8	ノルウェイの森	2018-04-26 00:40:14.038519	2018-04-26 00:40:14.038519	2	norway.jpg	420	\N	101
+\.
+
+
+--
+-- Name: projects_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('projects_id_seq', 110, true);
+
+
+--
+-- Data for Name: reviews; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY reviews (id, star, review, created_at, updated_at, project_id, user_id) FROM stdin;
+6	3	普通におもしろい。ギャルアニメももっとみたい。	2018-04-22 01:21:23.606601	2018-04-22 01:21:23.606601	6	\N
+7	5	割とおもしろい。次号も買いたい。	2018-04-22 22:59:50.410116	2018-04-22 22:59:50.410116	7	\N
+8	4	ボリュームが豊富だが解説がざつ	2018-04-22 23:00:20.869711	2018-04-22 23:00:20.869711	8	\N
+9	3	グラビアがよい	2018-04-22 23:00:47.867782	2018-04-22 23:00:47.867782	9	\N
+10	3	scalaの基本がわかった	2018-04-22 23:02:15.687472	2018-04-22 23:02:15.687472	10	\N
+11	1	つまらなかった	2018-04-22 23:02:39.358598	2018-04-22 23:02:39.358598	11	\N
+1	5	思ったより読みやすかった	2018-04-21 23:17:02.271057	2018-04-21 23:17:02.271057	1	1
+2	4	同じような内容の漫画ばかりでつまらない。4コマ漫画は面白かった。	2018-04-21 23:17:56.047709	2018-04-21 23:17:56.047709	2	1
+3	2	同じような内容の漫画ばかりでつまらない。4コマ漫画は面白かった。	2018-04-21 23:18:21.043031	2018-04-21 23:18:21.043031	3	1
+4	4	解説がわかりやすい。,now(),now(),4	\N	\N	4	1
+5	1	全然おもしろくない	2018-04-22 01:20:49.867194	2018-04-22 01:20:49.867194	5	1
+12	1	内容はrails4の新機能と簡単なフォーム作成だけでつまらなかった。	2018-04-24 03:17:26.747347	2018-04-24 03:17:26.747347	1	2
+\.
+
+
+--
+-- Name: reviews_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('reviews_id_seq', 1, false);
+
+
+--
+-- Data for Name: schema_migrations; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY schema_migrations (version) FROM stdin;
+20150604155852
+20160903164158
+20160903164416
+20180420162107
+20180420162927
+20180420185628
+20180421102614
+20180422152811
+20180422152906
+20180422163658
+20180422205012
+20180423090724
+20180423091159
+20180423091623
+20180423193701
+20180423194109
+20180424100815
+20180424130147
+20180425125606
+20180425135842
+20180425142710
+20180425184417
+20180426094053
+\.
+
+
+--
+-- Data for Name: sell_books; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY sell_books (id) FROM stdin;
+\.
+
+
+--
+-- Name: sell_books_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('sell_books_id_seq', 1, false);
+
+
+--
+-- Data for Name: sellbooks; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY sellbooks (id, title, price, pict_path, created_at, updated_at) FROM stdin;
+1	dictionary	1000	/logo/dict.jpg	2018-04-21 04:02:19.937282	2018-04-21 04:02:19.937282
+\.
+
+
+--
+-- Name: sellbooks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('sellbooks_id_seq', 1, false);
+
+
+--
+-- Data for Name: shops; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY shops (id, title, price, pict_path, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Name: shops_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('shops_id_seq', 1, false);
+
+
+--
+-- Data for Name: simple_logs; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY simple_logs (id, text, created_at, updated_at) FROM stdin;
+1	2018年04月25日 21:58:51	2018-04-25 12:58:51.789451	2018-04-25 12:58:51.789451
+\.
+
+
+--
+-- Name: simple_logs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('simple_logs_id_seq', 1, true);
+
+
+--
+-- Data for Name: user_items; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY user_items (id, "user", count, created_at, updated_at, user_id, clicked_item_id) FROM stdin;
+1	kaoq27@gmail.com	2	2018-04-23 18:21:38.210339	2018-04-23 18:21:38.210339	1	\N
+2	tamul@gmail.com	3	2018-04-24 02:53:20.671953	2018-04-24 02:53:20.671953	2	\N
+3	kakegawa@gmail.com	1	2018-04-24 02:53:46.659297	2018-04-24 02:53:46.659297	3	\N
+\.
+
+
+--
+-- Name: user_items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('user_items_id_seq', 1, false);
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY users (id, email, crypted_password, salt, created_at, updated_at, remember_me_token, remember_me_token_expires_at, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip) FROM stdin;
+1	kaoq27@gmail.com	\N	\N	2018-04-22 21:00:09.282329	2018-04-25 13:55:13.778343	\N	\N	$2a$11$tKzyJKEj7surGPQC4Qm4m.0Wg6ZFexSCtaleJZqzqHrL2/J8dU4mO	710e3c405a417514e60f75c9f1600f25d3cf4cb1254b597852eb23caa11f1198	2018-04-23 08:56:44.516141	\N	5	2018-04-25 13:55:13.776353	2018-04-24 19:22:25.920509	127.0.0.1	127.0.0.1
+\.
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('users_id_seq', 1, true);
+
+
+--
+-- Name: blogs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY blogs
+    ADD CONSTRAINT blogs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: clicks_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY clicks
+    ADD CONSTRAINT clicks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: item_descs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY item_descs
+    ADD CONSTRAINT item_descs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: item_sells_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY item_sells
+    ADD CONSTRAINT item_sells_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: projects_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY projects
+    ADD CONSTRAINT projects_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: reviews_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY reviews
+    ADD CONSTRAINT reviews_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sell_books_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY sell_books
+    ADD CONSTRAINT sell_books_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sellbooks_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY sellbooks
+    ADD CONSTRAINT sellbooks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: shops_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY shops
+    ADD CONSTRAINT shops_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: simple_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY simple_logs
+    ADD CONSTRAINT simple_logs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_items_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY user_items
+    ADD CONSTRAINT user_items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_reviews_on_project_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX index_reviews_on_project_id ON reviews USING btree (project_id);
+
+
+--
+-- Name: index_reviews_on_user_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX index_reviews_on_user_id ON reviews USING btree (user_id);
+
+
+--
+-- Name: index_user_items_on_user_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX index_user_items_on_user_id ON user_items USING btree (user_id);
+
+
+--
+-- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
+
+
+--
+-- Name: index_users_on_remember_me_token; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX index_users_on_remember_me_token ON users USING btree (remember_me_token);
+
+
+--
+-- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING btree (reset_password_token);
+
+
+--
+-- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
