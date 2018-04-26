@@ -2,7 +2,8 @@ Rails.application.routes.draw do
 
   devise_for :users
   get 'home/index'
-
+  post 'carts/index'
+  post 'projects/user_detail'
 		resources :projects
 		#root 'home#index'
                 root 'projects#index'
