@@ -1,5 +1,4 @@
 class Project < ActiveRecord::Base
-	has_many :tasks
 	has_many :reviews
 	has_many :user_items
 	validates :title,
@@ -9,6 +8,14 @@ class Project < ActiveRecord::Base
   def hello
     self.title += "でござる"
   end 
+
+  def price_up
+    self.price += 1
+  end
+
+  def get_item_code
+    self.item_code
+  end
 
   def self.search(search) #self.でクラスメソッドとしている
     if search.blank? # Controllerから渡されたパラメータが!= nilの場合は、titleカラムを部分一致検索
